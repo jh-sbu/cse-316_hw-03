@@ -26,6 +26,13 @@ function ListCard(props) {
         }
     }
 
+    let handleDeleteListButton = (event) => {
+        event.stopPropagation();
+        //event.ignoreDefault();
+        //event.stopImmediatlePropagation();
+        console.log("Hello! Delete list is not implemented yet");
+    }
+
     function handleToggleEdit(event) {
         event.stopPropagation();
         toggleEdit();
@@ -74,6 +81,7 @@ function ListCard(props) {
                 disabled={cardStatus}
                 type="button"
                 id={"delete-list-" + idNamePair._id}
+                onClick={handleDeleteListButton}
                 className="list-card-button"
                 value={"\u2715"}
             />
