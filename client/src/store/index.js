@@ -113,6 +113,7 @@ export const useGlobalStore = () => {
             }
             // UPDATE A LIST
             case GlobalStoreActionType.SET_CURRENT_LIST: {
+                //console.log(payload);
                 return setStore({
                     ...store,
                     currentList: payload,
@@ -140,6 +141,29 @@ export const useGlobalStore = () => {
     // THESE ARE THE FUNCTIONS THAT WILL UPDATE OUR STORE AND
     // DRIVE THE STATE OF THE APPLICATION. WE'LL CALL THESE IN 
     // RESPONSE TO EVENTS INSIDE OUR COMPONENTS.
+
+    store.createNewList = () => {
+        let asyncCreateNewList = async () => {
+            let newList = {
+                name: "Untitled",
+                songs: []
+            };
+            //console.log("Yessir");
+            let response = await api.createPlaylist(newList);
+            if(response.data.success) {
+                let newlist = response.data.playlist
+                //console.log("Test")
+                storeReducer({
+                    type: GlobalStoreActionType.CREATE_NEW_LIST,
+                    payload: newlist
+                });
+                store.history.push("/playlist/" + newlist._id);
+                //console.log("success!");
+            }
+        }
+
+        asyncCreateNewList();
+    }
 
     // THIS FUNCTION PROCESSES CHANGING A LIST NAME
     store.changeListName = function (id, newName) {
