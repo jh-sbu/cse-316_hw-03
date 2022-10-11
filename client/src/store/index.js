@@ -42,65 +42,96 @@ export const useGlobalStore = () => {
             // LIST UPDATE OF ITS NAME
             case GlobalStoreActionType.CHANGE_LIST_NAME: {
                 return setStore({
+                    ...store,
+                    idNamePairs: payload.idNamePairs,
+                    currentList: payload.playist,
+                    listNameActive: false
+                });
+                /*return setStore({
                     idNamePairs: payload.idNamePairs,
                     currentList: payload.playlist,
                     newListCounter: store.newListCounter,
                     listNameActive: false
-                });
+                });*/
             }
             // STOP EDITING THE CURRENT LIST
             case GlobalStoreActionType.CLOSE_CURRENT_LIST: {
                 return setStore({
+                    ...store,
+                    currentList: null,
+                    listNameActive: false
+                });
+                /*return setStore({
                     idNamePairs: store.idNamePairs,
                     currentList: null,
                     newListCounter: store.newListCounter,
                     listNameActive: false
-                })
+                })*/
             }
             // CREATE A NEW LIST
             case GlobalStoreActionType.CREATE_NEW_LIST: {
                 return setStore({
+                    ...store,
+                    currentList: payload,
+                    listNameActive: false
+                });
+                /*return setStore({
                     idNamePairs: store.idNamePairs,
                     currentList: payload,
                     newListCounter: store.newListCounter + 1,
                     listNameActive: false
-                })
+                })*/
             }
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
             case GlobalStoreActionType.LOAD_ID_NAME_PAIRS: {
                 return setStore({
+                    ...store,
+                    idNamePairs: payload,
+                    currentList: null,
+                    listNameActive: false
+                })
+                /*return setStore({
                     idNamePairs: payload,
                     currentList: null,
                     newListCounter: store.newListCounter,
                     listNameActive: false
-                });
+                });*/
             }
             // PREPARE TO DELETE A LIST
             case GlobalStoreActionType.MARK_LIST_FOR_DELETION: {
                 return setStore({
+                    ...store,
+                    currentList: null,
+                    listNameActive: false
+                });
+                /*return setStore({
                     idNamePairs: store.idNamePairs,
                     currentList: null,
                     newListCounter: store.newListCounter,
                     listNameActive: false
-                });
+                });*/
             }
             // UPDATE A LIST
             case GlobalStoreActionType.SET_CURRENT_LIST: {
                 return setStore({
+                    ...store,
+                    currentList: payload,
+                    listNameActive: false
+                });
+                /*return setStore({
                     idNamePairs: store.idNamePairs,
                     currentList: payload,
                     newListCounter: store.newListCounter,
                     listNameActive: false
-                });
+                });*/
             }
             // START EDITING A LIST NAME
             case GlobalStoreActionType.SET_LIST_NAME_EDIT_ACTIVE: {
                 return setStore({
-                    idNamePairs: store.idNamePairs,
+                    ...store,
                     currentList: payload,
-                    newListCounter: store.newListCounter,
                     listNameActive: true
-                });
+                })
             }
             default:
                 return store;
@@ -197,7 +228,7 @@ export const useGlobalStore = () => {
     }
 
     // THIS FUNCTION ENABLES THE PROCESS OF EDITING A LIST NAME
-    store.setlistNameActive = function () {
+    store.setIsListNameEditActive = function () {
         storeReducer({
             type: GlobalStoreActionType.SET_LIST_NAME_EDIT_ACTIVE,
             payload: null

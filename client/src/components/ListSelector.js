@@ -39,9 +39,12 @@ const ListSelector = () => {
                     className="playlister-button"
                     value="+" />
                 Your Lists
-            </div>                {
+            </div>
+            <div>
+                {
                     listCard
                 }
+            </div>                
             </div>
         </div>)
 }
