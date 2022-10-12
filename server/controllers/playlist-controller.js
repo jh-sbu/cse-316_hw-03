@@ -124,10 +124,10 @@ addSong = async (req, res) => {
                     youTubeId: "dQw4w9WgXcQ"
                 };
     
-                console.log("This one");
+                //console.log("This one");
                 list.songs.push(newSong);
             } else {
-                list.songs.push(req.body.song);
+                //list.songs.push(req.body.song);
                 console.log("Thart one");
             }
 

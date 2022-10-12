@@ -26,6 +26,8 @@ export const getPlaylistPairs = () => api.get('playlistpairs')
 export const getPlaylistById = (id) => api.get(`/playlist/${id}`)
 export const createPlaylist = (newList) => api.post('/playlist', newList)
 export const deletePlaylist = (id) => api.post(`/deleteplaylist/${id}`)
+export const addSong = (body) => api.post('/addsong', body)
+export const deleteSong = (body) => api.post('/deletesong', body)
 
 const apis = {
     getAllPlaylists,
@@ -33,6 +35,8 @@ const apis = {
     getPlaylistById,
     createPlaylist,
     deletePlaylist,
+    addSong,
+    deleteSong,
 }
 
 export default apis

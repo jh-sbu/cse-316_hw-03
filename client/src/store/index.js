@@ -275,6 +275,18 @@ export const useGlobalStore = () => {
         }
         asyncSetCurrentList(id);
     }
+
+    store.deleteSong = (songId) => {
+        console.log(songId);
+        (async (songId) => {
+            console.log(store.currentList);
+            await api.deleteSong({id: store.currentList._id, song: songId}).catch(err => console.log(err)).then(list => {
+                console.log("It gets here twice over");
+                store.setCurrentList(store.currentList._id);
+            });
+        })(songId);
+    }
+
     store.getPlaylistSize = function() {
         return store.currentList.songs.length;
     }
