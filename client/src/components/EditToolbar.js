@@ -12,6 +12,7 @@ function EditToolbar() {
     const history = useHistory();
 
     let enabledButtonClass = "playlister-button";
+    let disabledButtonClass = "playlister-button-disabled";
 
     function handleUndo() {
         store.undo();
@@ -32,38 +33,45 @@ function EditToolbar() {
     if (store.isListNameEditActive) {
         editStatus = true;
     }
+
+    let addSongEnabled = store.currentList !== null;
+    //console.log(addSongEnabled);
+    let undoEnabled = store.currentList !== null && store.canUndo();
+    let redoEnabled = store.currentList !== null && store.canRedo();
+    let closeEnabled = store.currentList !== null;
+
     return (
         <span id="edit-toolbar">
             <input
                 type="button"
                 id='add-song-button'
-                disabled={editStatus}
+                disabled={!addSongEnabled}
                 value="+"
-                className={enabledButtonClass}
+                className={addSongEnabled ? enabledButtonClass : disabledButtonClass}
                 onClick={handleAddSong}
             />
             <input
                 type="button"
                 id='undo-button'
-                disabled={editStatus}
+                disabled={!undoEnabled}
                 value="⟲"
-                className={enabledButtonClass}
+                className={undoEnabled ? enabledButtonClass : disabledButtonClass}
                 onClick={handleUndo}
             />
             <input
                 type="button"
                 id='redo-button'
-                disabled={editStatus}
+                disabled={!redoEnabled}
                 value="⟳"
-                className={enabledButtonClass}
+                className={redoEnabled ? enabledButtonClass : disabledButtonClass}
                 onClick={handleRedo}
             />
             <input
                 type="button"
                 id='close-button'
-                disabled={editStatus}
+                disabled={!closeEnabled}
                 value="&#x2715;"
-                className={enabledButtonClass}
+                className={closeEnabled ? enabledButtonClass : disabledButtonClass}
                 onClick={handleClose}
             />
         </span>);

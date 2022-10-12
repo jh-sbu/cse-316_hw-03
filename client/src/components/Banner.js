@@ -1,7 +1,4 @@
 import EditToolbar from "./EditToolbar";
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { GlobalStoreContext } from '../store/index'
-import { useContext } from "react";
 /*
     Our Application's Banner, note we are using function-style
     React. Our banner just has a left-aligned heading and a
@@ -10,15 +7,32 @@ import { useContext } from "react";
     @author McKilla Gorilla
 */
 function Banner(props) {
-    const { store } = useContext(GlobalStoreContext);
+    /*const { store } = useContext(GlobalStoreContext);
+
+    let handleCreateNewList = () => {
+        store.createNewList();
+    }*/
+
     //console.log(store);
     //console.log(true ? "yes" : "no");
-    return (
+
+    return ( 
         <div id="playlister-banner">
             Playlister
-            {store.currentList ? <EditToolbar /> : null}
+            <EditToolbar />
         </div>
     )
+    /*return (
+        <div id="playlister-banner">
+            Playlister
+            {store.currentList ? <EditToolbar /> : <input
+                    type="button"
+                    id="add-list-button"
+                    onClick={handleCreateNewList}
+                    className="playlister-button"
+                    value="+" />}
+        </div>
+    )*/
 }
 
 export default Banner;

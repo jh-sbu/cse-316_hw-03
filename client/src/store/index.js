@@ -309,6 +309,14 @@ export const useGlobalStore = () => {
         tps.doTransaction();
     }
 
+    store.canUndo = () => {
+        tps.hasTransactionToUndo();
+    }
+
+    store.canRedo = () => {
+        tps.hasTransactionToRedo();
+    }
+
     // THIS FUNCTION ENABLES THE PROCESS OF EDITING A LIST NAME
     store.setIsListNameEditActive = function () {
         storeReducer({

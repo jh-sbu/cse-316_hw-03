@@ -73,7 +73,8 @@ body {
 
 .playlister-button, .playlister-button-disabled {
   font-size:36pt;
-  border-width: 0px;
+  border-width: 1px;
+  border-radius: 5px;
   float:left;
   color: black;
   cursor: pointer;
