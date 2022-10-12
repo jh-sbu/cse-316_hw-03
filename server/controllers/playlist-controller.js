@@ -150,7 +150,7 @@ deleteSong = async (req, res) => {
             //console.log(req.params);
             //console.log(req.body);
             //console.log(req);
-            if(!req.body.song) {
+            if(!(req.body.song >= 0)) {
                 return res.status(400).json({success: false, error: "You must provide a song index to delete"});
             } else {
                 if(!(req.body.song >= 0 && req.body.song < list.songs.length)) {
