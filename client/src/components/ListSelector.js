@@ -40,7 +40,7 @@ const ListSelector = () => {
                     value="+" />
                 Your Lists
             </div>
-            <div>
+            <div id="playlist-lists">
                 {
                     listCard
                 }
