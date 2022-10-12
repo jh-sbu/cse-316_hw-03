@@ -22,7 +22,8 @@ body {
 
 #root {
   background-color: var(--swatch-primary);
-  font-family: "Lexend Exa";
+  /*font-family: "Lexend Exa";*/
+  font-family: 'Tangerine';
   position: absolute;
   width: 80%;
   left: 10%;

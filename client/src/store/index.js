@@ -33,7 +33,8 @@ export const useGlobalStore = () => {
         idNamePairs: [],
         currentList: null,
         newListCounter: 0,
-        listNameActive: false
+        listNameActive: false,
+        isModalOpen: false
     });
 
     // HERE'S THE DATA STORE'S REDUCER, IT MUST
