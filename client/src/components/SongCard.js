@@ -7,7 +7,7 @@ function SongCard(props) {
     const { song, index } = props;
 
     let handleDeleteSong = (event) => {
-        console.log("It gets here");
+        //console.log("It gets here");
         store.deleteSong(index);
     }
 

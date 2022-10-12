@@ -277,14 +277,25 @@ export const useGlobalStore = () => {
     }
 
     store.deleteSong = (songId) => {
-        console.log(songId);
+        //console.log(songId);
         (async (songId) => {
-            console.log(store.currentList);
+            //console.log(store.currentList);
             await api.deleteSong({id: store.currentList._id, song: songId}).catch(err => console.log(err)).then(list => {
-                console.log("It gets here twice over");
+                //console.log("It gets here twice over");
                 store.setCurrentList(store.currentList._id);
             });
         })(songId);
+    }
+
+    store.addSong = (song) => {
+        //console.log(songId);
+        (async (song) => {
+            //console.log(store.currentList);
+            await api.addSong({id: store.currentList._id, song: song}).catch(err => console.log(err)).then(list => {
+                //console.log("It gets here twice over");
+                store.setCurrentList(store.currentList._id);
+            });
+        })(song);
     }
 
     store.getPlaylistSize = function() {
