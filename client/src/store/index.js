@@ -37,6 +37,10 @@ export const useGlobalStore = () => {
         isModalOpen: false
     });
 
+    const redux = (type, payload) => {
+        storeReducer({type: type, payload: payload});
+    }
+
     // HERE'S THE DATA STORE'S REDUCER, IT MUST
     // HANDLE EVERY TYPE OF STATE CHANGE
     const storeReducer = (action) => {
@@ -176,13 +180,23 @@ export const useGlobalStore = () => {
         asyncCreateNewList();
     }
 
+    store.changeListName = async (id, newName) => {
+        //console.log(id);
+        //console.log(newName);
+        await(api.renamePlaylist({id: id, newName: newName})).catch(err => {
+            console.log(err);
+        }).then(list => {
+            store.loadIdNamePairs();
+        });
+    }
+
     // THIS FUNCTION PROCESSES CHANGING A LIST NAME
-    store.changeListName = function (id, newName) {
+    /*store.changeListName = function (id, newName) {
         // GET THE LIST
         async function asyncChangeListName(id) {
             let response = await api.getPlaylistById(id);
             if (response.data.success) {
-                let playlist = response.data.playist;
+                let playlist = response.data.playlist;
                 playlist.name = newName;
                 async function updateList(playlist) {
                     response = await api.updatePlaylistById(playlist._id, playlist);
@@ -207,7 +221,7 @@ export const useGlobalStore = () => {
             }
         }
         asyncChangeListName(id);
-    }
+    }*/
 
     store.deleteList = (id) => {
         //console.log("It gets here");
