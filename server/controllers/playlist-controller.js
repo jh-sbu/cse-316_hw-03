@@ -39,6 +39,27 @@ createPlaylist = (req, res) => {
             })
         })
 }
+deletePlaylist = async (req, res) => {
+    let error = null;
+    let deleteStatus = await Playlist.deleteOne({ _id: req.params.id }).catch(err => {
+        //console.log(err);
+        error = err;
+    });
+
+    //console.log(deleteStatus);
+
+    if(error)
+        return res.status(400).json({success: false, error: error});
+
+    if(!deleteStatus)
+        return res.status(400).json({success: false, error: "Could not delete playlist"});
+    else if(deleteStatus.deletedCount !== 1)
+        return res.status(400).json({success: false, error: "Could not find playlist to delete"});
+
+    return res.status(200).json({ success: true, id: req.params.id });
+
+    //console.log(deleteStatus);
+}
 getPlaylistById = async (req, res) => {
     await Playlist.findOne({ _id: req.params.id }, (err, list) => {
         if (err) {
@@ -87,9 +108,71 @@ getPlaylistPairs = async (req, res) => {
     }).catch(err => console.log(err))
 }
 
+addSong = async (req, res) => {
+    if(!req.body ||!req.body.id)
+        return res.status(400).json({success: false, error: "You must include a valid playlist ID"});
+    await Playlist.findOne({ _id: req.body.id}).exec().catch( err =>
+        res.status(400).json({success: false, error: err})).then(async (list) => {
+            //console.log(list);
+            //console.log(req.params);
+            //console.log(req.body);
+            //console.log(req);
+            if(!req.body || !req.body.song) {
+                newSong = {
+                    title: "Untitled",
+                    artist: "Unknown",
+                    youTubeId: "dQw4w9WgXcQ"
+                };
+    
+                console.log("This one");
+                list.songs.push(newSong);
+            } else {
+                list.songs.push(req.body.song);
+                console.log("Thart one");
+            }
+
+            //console.log(list);
+
+            await Playlist.replaceOne({_id: req.body.id}, list).exec().catch(err =>
+                res.status(400).json({success: false, error: err})).then(list => {
+                    console.log(list);
+                    return res.status(200).json({ success: true, playlist: list});
+                })
+        })
+}
+
+deleteSong = async (req, res) => {
+    if(!req.body ||!req.body.id)
+        return res.status(400).json({success: false, error: "You must include a valid playlist ID"});
+    await Playlist.findOne({ _id: req.body.id}).exec().catch( err =>
+        res.status(400).json({success: false, error: err})).then(async (list) => {
+            //console.log(list);
+            //console.log(req.params);
+            //console.log(req.body);
+            //console.log(req);
+            if(!req.body.song) {
+                return res.status(400).json({success: false, error: "You must provide a song index to delete"});
+            } else {
+                if(!(req.body.song >= 0 && req.body.song < list.songs.length)) {
+                    return res.status(400).json({success: false, error: "You must provide a valid song index (index >= 0, index < songs.length)"});
+                } else {
+                    list.songs = list.songs.filter((e, i) => i != req.body.song);
+                }
+                await Playlist.replaceOne({_id: req.body.id}, list).exec().catch(err =>
+                    res.status(400).json({success: false, error: err})).then(response => {
+                        console.log(response);
+                        return res.status(200).json({ success: true, playlist: list});
+                    })
+            } 
+        })
+}
+
 module.exports = {
     createPlaylist,
+    deletePlaylist,
     getPlaylists,
     getPlaylistPairs,
-    getPlaylistById
+    getPlaylistById,
+    addSong,
+    deleteSong
 }

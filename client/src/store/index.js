@@ -16,6 +16,8 @@ export const GlobalStoreActionType = {
     CLOSE_CURRENT_LIST: "CLOSE_CURRENT_LIST",
     CREATE_NEW_LIST: "CREATE_NEW_LIST",
     LOAD_ID_NAME_PAIRS: "LOAD_ID_NAME_PAIRS",
+    MARK_LIST_FOR_DELETION: "MARK_LIST_FOR_DELETION",
+    DELETE_LIST: "DELETE_LIST",
     SET_CURRENT_LIST: "SET_CURRENT_LIST",
     SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE",
 }
@@ -111,6 +113,14 @@ export const useGlobalStore = () => {
                     listNameActive: false
                 });*/
             }
+            case GlobalStoreActionType.DELETE_LIST: {
+                return setStore({
+                    ...store,
+                    idNamePairs: payload.idNamePairs,
+                    currentList: null,
+                    listNameActive: false
+                })
+            }
             // UPDATE A LIST
             case GlobalStoreActionType.SET_CURRENT_LIST: {
                 //console.log(payload);
@@ -196,6 +206,30 @@ export const useGlobalStore = () => {
             }
         }
         asyncChangeListName(id);
+    }
+
+    store.deleteList = (id) => {
+        //console.log("It gets here");
+        (async (id) => {
+            //console.log("And also here");
+            //console.log(id);
+            const response = await api.deletePlaylist(id).catch(err => console.log(err));
+            if(response && response.data.success) {
+                //console.log("Still here");
+                (async () => {
+                    const pairs = await api.getPlaylistPairs();
+                    if(pairs.data.success) {
+                        //console.log("How about here");
+                        storeReducer({
+                            type: GlobalStoreActionType.DELETE_LIST,
+                            payload: {
+                                idNamePairs: pairs.data.idNamePairs
+                            }
+                        })
+                    }
+                })();
+            }
+        })(id);
     }
 
     // THIS FUNCTION PROCESSES CLOSING THE CURRENTLY LOADED LIST

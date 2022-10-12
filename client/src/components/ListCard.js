@@ -30,6 +30,15 @@ function ListCard(props) {
         event.stopPropagation();
         //event.ignoreDefault();
         //event.stopImmediatlePropagation();
+        if(!event.target.disabled) {
+            //console.log(event.target);
+            //console.log(event.target.parentNode);
+            //console.log(event.target.parentNode.id);
+            let _id = event.target.parentNode.id;
+
+            store.deleteList(_id);
+        }
+
         console.log("Hello! Delete list is not implemented yet");
     }
 
