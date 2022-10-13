@@ -167,6 +167,29 @@ deleteSong = async (req, res) => {
         })
 }
 
+editSong = async(req, res) => {
+    if(!req.body || !req.body.id || !(req.body.songIndex >= 0) || !req.body.song) {
+        console.log(req.body);
+        return res.status(400).json({success: false, error: "You must include a list id, song index, and song body"});
+    }
+        
+    await Playlist.findOne({ _id: req.body.id}).exec().catch(err => {
+        return res.status(400).json({success: false, error: err});
+    }).then(async (list) => {
+        if(req.body.songIndex >= list.songs.length)
+            return res.status(400).json({success: false, error: "Index of out bounds"});
+        else {
+            list.songs[req.body.songIndex] = req.body.song;
+            await Playlist.replaceOne({_id: req.body.id}, list).exec().catch(err => {
+                return res.status(400).json({success: false, error: err});
+            }).then(response => {
+                console.log(response);
+                return res.status(200).json({success: true, playlist: list});
+            })
+        }
+    })
+}
+
 renamePlaylist = async (req, res) => {
     if(!req.body || !req.body.id || !req.body.newName)
         return res.status(400).json({success: false, error: "You must include the playlist id and a new name"});
@@ -191,5 +214,6 @@ module.exports = {
     getPlaylistById,
     addSong,
     deleteSong,
+    editSong,
     renamePlaylist
 }

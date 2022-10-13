@@ -418,6 +418,18 @@ export const useGlobalStore = () => {
         redux(GlobalStoreActionType.CANCEL_SONG_EDITING, {});
     }
 
+    store.doEditSong = async (song, index) => {
+        //console.log(song);
+        //console.log(index);
+        await api.editSong({id: store.currentList._id, songIndex: index, song: song}).catch(err => {
+            console.log(err)
+        }).then(response => {
+            if(response.data.success) {
+                redux(GlobalStoreActionType.EDIT_SONG, response.data.playlist);
+            }
+        });
+    }
+
     store.addSong = (song) => {
         //console.log(songId);
         (async (song) => {

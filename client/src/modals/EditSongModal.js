@@ -38,7 +38,15 @@ function EditSongModal(props) {
     }
 
     let handleConfirm = () => {
-        console.log("Confirm button not implemented yet");
+        let song = {
+            "title": songName,
+            "artist": songArtist,
+            "youTubeId": songYouTubeId
+        };
+
+        store.doEditSong(song, store.editSong);
+
+        //console.log("Confirm button not implemented yet");
     }
 
     let changeText = (event) => {
@@ -46,7 +54,11 @@ function EditSongModal(props) {
     }
 
     if(!initialized && store.isEditSongOpen) {
+        //console.log(store.currentList);
+        //console.log(store.currentList.songs);
+        //console.log(store.editSong);
         let song = store.currentList.songs[store.editSong];
+        //console.log(song);
         setSongName(song.title);
         setSongArtist(song.artist);
         setSongYouTubeId(song.youTubeId);
