@@ -15,7 +15,7 @@ function PlaylistCards() {
     let [dragStart, setDragStart] = useState(null);
 
     let doSwap = (end) => {
-        console.log("Drag and drop not implemented yet");
+        //console.log("Drag and drop not implemented yet");
         //console.log(dragStart);
         //console.log(end);
         if(dragStart !== end) {

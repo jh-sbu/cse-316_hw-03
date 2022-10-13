@@ -21,6 +21,19 @@ function DeleteListModal(props) {
         //console.log("Cancel button not implemented");
     }
 
+    let listName = "";
+
+    //console.log(store.idNamePairs.filter(pair => pair._id === store.targetList));
+
+    if(store.targetList !== null) {
+        let theList = store.idNamePairs.filter(pair => pair._id === store.targetList);
+        theList = theList[0];
+        //console.log("It gets here");
+        listName = theList.name;
+    }
+
+    console.log(listName);
+
     return ( 
         <div 
         className={modalClass}
@@ -32,7 +45,7 @@ function DeleteListModal(props) {
                 </div>
                 <div className="modal-center">
                     <div className="modal-center-content">
-                        Are you sure you wish to permanently delete the <span>test</span> playlist?
+                        Are you sure you wish to permanently delete the <span>{listName}</span> playlist?
                     </div>
                 </div>
                 <div className="modal-south">

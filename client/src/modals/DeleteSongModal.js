@@ -20,6 +20,20 @@ function DeleteSongModal(props) {
 
     let modalClass = store.isDeleteSongOpen ? "modal is-visible" : "modal";
 
+    //console.log(store.targetSong);
+    //console.log(null >= 0);
+
+    let songName = "";
+
+    if(store.currentList !== null && store.targetSong !== null) {
+        if(store.targetSong >= 0) {
+            //console.log(store.currentList);
+            if(store.targetSong < store.currentList.songs.length)
+                songName = store.currentList.songs[store.targetSong].title;
+                //console.log(songName);
+        }
+    }
+
     return (
         <div 
             className={modalClass} 
@@ -31,7 +45,7 @@ function DeleteSongModal(props) {
                     </div>
                     <div className="modal-center">
                         <div className="modal-center-content">
-                            Are you sure you wish to remove <span>NOT IMPLEMENTED</span> from the playlist?
+                            Are you sure you wish to remove <span>{songName}</span> from the playlist?
                         </div>
                     </div>
                     <div className="modal-south">
