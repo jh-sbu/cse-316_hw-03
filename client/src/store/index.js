@@ -23,7 +23,10 @@ export const GlobalStoreActionType = {
     CANCEL_LIST_DELETION: "CANCEL_LIST_DELETION",
     MARK_SONG_FOR_DELETION: "MARK_SONG_FOR_DELETION",
     CANCEL_SONG_DELETION: "CANCEL_SONG_DELETION",
-    DELETE_SONG: "DELETE_SONG"
+    DELETE_SONG: "DELETE_SONG",
+    MARK_SONG_FOR_EDITING: "MARK_SONG_FOR_EDITING",
+    CANCEL_SONG_EDITING: "CANCEL_SONG_EDITING",
+    EDIT_SONG: "EDIT_SONG"
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -42,7 +45,8 @@ export const useGlobalStore = () => {
         targetSong: null,
         isDeleteListOpen: false,
         targetList: null,
-        isEditSongOpen: false
+        isEditSongOpen: false,
+        editSong: null
     });
 
     const redux = (type, payload) => {
@@ -188,6 +192,28 @@ export const useGlobalStore = () => {
                     ...store,
                     targetSong: null,
                     isDeleteSongOpen: false,
+                    currentList: payload
+                })
+            }
+            case GlobalStoreActionType.MARK_SONG_FOR_EDITING: {
+                return setStore({
+                    ...store,
+                    editSong: payload,
+                    isEditSongOpen: true
+                })
+            }
+            case GlobalStoreActionType.CANCEL_SONG_EDITING: {
+                return setStore({
+                    ...store,
+                    editSong: null,
+                    isEditSongOpen: false
+                })
+            }
+            case GlobalStoreActionType.EDIT_SONG: {
+                return setStore({
+                    ...store,
+                    editSong: null,
+                    isEditSongOpen: false,
                     currentList: payload
                 })
             }
@@ -355,7 +381,7 @@ export const useGlobalStore = () => {
     } */
 
     store.markSongForDeletion = (songId) => {
-        console.log("and also here");
+        //console.log("and also here");
         redux(GlobalStoreActionType.MARK_SONG_FOR_DELETION, songId);
     }
 
@@ -382,6 +408,14 @@ export const useGlobalStore = () => {
                 //store.setCurrentList(store.currentList._id);
             });
         })(songId);
+    }
+
+    store.markSongForEditing = (songId) => {
+        redux(GlobalStoreActionType.MARK_SONG_FOR_EDITING, songId);
+    }
+
+    store.cancelSongEditing = () => {
+        redux(GlobalStoreActionType.CANCEL_SONG_EDITING, {});
     }
 
     store.addSong = (song) => {

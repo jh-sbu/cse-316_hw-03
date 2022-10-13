@@ -11,12 +11,18 @@ function SongCard(props) {
         store.markSongForDeletion(index);
     }
 
+    let handleDoubleClick = (event) => {
+        //console.log("Editing song not implemented yet");
+        store.markSongForEditing(index);
+    }
+
     let cardClass = "list-card unselected-list-card";
     return (
         <div
             key={index}
             id={'song-' + index + '-card'}
             className={cardClass}
+            onDoubleClick={handleDoubleClick}
         >
             {index + 1}.
             <a
