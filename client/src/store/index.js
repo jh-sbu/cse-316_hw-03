@@ -20,6 +20,7 @@ export const GlobalStoreActionType = {
     DELETE_LIST: "DELETE_LIST",
     SET_CURRENT_LIST: "SET_CURRENT_LIST",
     SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE",
+    CANCEL_LIST_DELETION: "CANCEL_LIST_DELETION",
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -34,7 +35,11 @@ export const useGlobalStore = () => {
         currentList: null,
         newListCounter: 0,
         listNameActive: false,
-        isModalOpen: false
+        isDeleteSongOpen: false,
+        targetSong: null,
+        isDeleteListOpen: false,
+        targetList: null,
+        isEditSongOpen: false
     });
 
     const redux = (type, payload) => {
@@ -109,7 +114,9 @@ export const useGlobalStore = () => {
                 return setStore({
                     ...store,
                     currentList: null,
-                    listNameActive: false
+                    listNameActive: false,
+                    targetList: payload,
+                    isDeleteListOpen: true
                 });
                 /*return setStore({
                     idNamePairs: store.idNamePairs,
@@ -123,7 +130,9 @@ export const useGlobalStore = () => {
                     ...store,
                     idNamePairs: payload.idNamePairs,
                     currentList: null,
-                    listNameActive: false
+                    listNameActive: false,
+                    isDeleteListOpen: false,
+                    targetList: null
                 })
             }
             // UPDATE A LIST
@@ -147,6 +156,14 @@ export const useGlobalStore = () => {
                     ...store,
                     currentList: payload,
                     listNameActive: true
+                })
+            }
+            case GlobalStoreActionType.CANCEL_LIST_DELETION: {
+                return setStore({
+                    ...store,
+                    currentList: null,
+                    isDeleteListOpen: false,
+                    targetList: null
                 })
             }
             default:
@@ -222,6 +239,14 @@ export const useGlobalStore = () => {
         }
         asyncChangeListName(id);
     }*/
+
+    store.markListForDeletion = (id) => {
+        redux(GlobalStoreActionType.MARK_LIST_FOR_DELETION, id)
+    }
+
+    store.cancelListDeletion = () => {
+        redux(GlobalStoreActionType.CANCEL_LIST_DELETION, {});
+    }
 
     store.deleteList = (id) => {
         //console.log("It gets here");

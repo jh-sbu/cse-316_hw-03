@@ -36,7 +36,7 @@ function ListCard(props) {
             //console.log(event.target.parentNode.id);
             let _id = event.target.parentNode.id;
 
-            store.deleteList(_id);
+            store.markListForDeletion(_id);
         }
 
         console.log("Hello! Delete list is not implemented yet");

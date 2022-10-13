@@ -5,9 +5,25 @@ import { GlobalStoreContext } from '../store'
 function DeleteListModal(props) {
     const {store} = useContext(GlobalStoreContext);
 
+    /*let modalClass = "modal";
+    if(store.isDeleteListOpen)
+        modalClass = "modal is-visible";*/
+
+    let modalClass = store.isDeleteListOpen ? "modal is-visible" : "modal";
+
+    let handleConfirm = () => {
+        store.deleteList(store.targetList);
+        //console.log("Confirm button not implemented");
+    }
+
+    let handleCancel = () => {
+        store.cancelListDeletion();
+        //console.log("Cancel button not implemented");
+    }
+
     return ( 
         <div 
-        className="modal" 
+        className={modalClass}
         id="delete-list-modal" 
         data-animation="slideInOutLeft">
             <div className="modal-root" id='verify-delete-list-root'>
@@ -23,12 +39,12 @@ function DeleteListModal(props) {
                     <input type="button" 
                         id="delete-list-confirm-button" 
                         className="modal-button" 
-                        onClick={() => {console.log("Confirm button not implemented");}}
+                        onClick={handleConfirm}
                         value='Confirm' />
                     <input type="button" 
                         id="delete-list-cancel-button" 
                         className="modal-button" 
-                        onClick={() => {console.log("Cancel button not implemented");}}
+                        onClick={handleCancel}
                         value='Cancel' />
                 </div>
             </div>
