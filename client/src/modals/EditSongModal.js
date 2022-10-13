@@ -23,7 +23,14 @@ function EditSongModal(props) {
 
     const [songName, setSongName] = useState("");
     const [songArtist, setSongArtist] = useState("");
-    const [songYouTubeId, setYouTubeId] = useState("");
+    const [songYouTubeId, setSongYouTubeId] = useState("");
+    const [initialized, setInitialized] = useState(false);
+
+    let editInputDict = {
+        "edit-song-modal-title-textfield": setSongName,
+        "edit-song-modal-artist-textfield": setSongArtist,
+        "edit-song-modal-youTubeId-textfield": setSongYouTubeId
+    };
 
     let handleCancel = () => {
         //console.log("Cancel Button not implemented yet");
@@ -35,17 +42,20 @@ function EditSongModal(props) {
     }
 
     let changeText = (event) => {
-        this.setState((prevState) => {
-            let setValue = this.editInputDict[event.target.id];
-            if(setValue === "title")
-                return ({title: event.target.value});
-            else if(setValue === "artist")
-                return ({artist: event.target.value});
-            else
-                return ({youTubeId: event.target.value});
-        }, () => {
-            
-        });
+        editInputDict[event.target.id](event.target.value);
+    }
+
+    if(!initialized && store.isEditSongOpen) {
+        let song = store.currentList.songs[store.editSong];
+        setSongName(song.title);
+        setSongArtist(song.artist);
+        setSongYouTubeId(song.youTubeId);
+        setInitialized(true);
+        //console.log(song);
+    }
+
+    if(initialized && !(store.isEditSongOpen)) {
+        setInitialized(false);
     }
 
     /*let doEditSong = () => {
