@@ -8,7 +8,7 @@ function SongCard(props) {
 
     let handleDeleteSong = (event) => {
         //console.log("It gets here");
-        store.deleteSong(index);
+        store.markSongForDeletion(index);
     }
 
     let cardClass = "list-card unselected-list-card";

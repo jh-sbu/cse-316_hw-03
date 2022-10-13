@@ -21,6 +21,9 @@ export const GlobalStoreActionType = {
     SET_CURRENT_LIST: "SET_CURRENT_LIST",
     SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE",
     CANCEL_LIST_DELETION: "CANCEL_LIST_DELETION",
+    MARK_SONG_FOR_DELETION: "MARK_SONG_FOR_DELETION",
+    CANCEL_SONG_DELETION: "CANCEL_SONG_DELETION",
+    DELETE_SONG: "DELETE_SONG"
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -166,6 +169,28 @@ export const useGlobalStore = () => {
                     targetList: null
                 })
             }
+            case GlobalStoreActionType.MARK_SONG_FOR_DELETION: {
+                return setStore({
+                    ...store,
+                    targetSong: payload,
+                    isDeleteSongOpen: true
+                })
+            }
+            case GlobalStoreActionType.CANCEL_SONG_DELETION: {
+                return setStore({
+                    ...store,
+                    targetSong: null,
+                    isDeleteSongOpen: false
+                })
+            }
+            case GlobalStoreActionType.DELETE_SONG: {
+                return setStore({
+                    ...store,
+                    targetSong: null,
+                    isDeleteSongOpen: false,
+                    currentList: payload
+                })
+            }
             default:
                 return store;
         }
@@ -298,7 +323,20 @@ export const useGlobalStore = () => {
         asyncLoadIdNamePairs();
     }
 
-    store.setCurrentList = function (id) {
+    store.setCurrentList = async (id) => {
+        await(api.getPlaylistById(id)).catch(err => {
+            console.log(err);
+        }).then(response => {
+            //console.log(response);
+            if(response.data.success) {
+                //console.log(response.data.playlist);
+                redux(GlobalStoreActionType.SET_CURRENT_LIST, response.data.playlist);
+                store.history.push("/playlist/" + response.data.playlist._id);
+            }
+        })
+    }
+
+    /*store.setCurrentList = function (id) {
         async function asyncSetCurrentList(id) {
             let response = await api.getPlaylistById(id);
             if (response.data.success) {
@@ -314,6 +352,15 @@ export const useGlobalStore = () => {
             }
         }
         asyncSetCurrentList(id);
+    } */
+
+    store.markSongForDeletion = (songId) => {
+        console.log("and also here");
+        redux(GlobalStoreActionType.MARK_SONG_FOR_DELETION, songId);
+    }
+
+    store.cancelSongDeletion = () => {
+        redux(GlobalStoreActionType.CANCEL_SONG_DELETION, {});
     }
 
     store.deleteSong = (songId) => {
@@ -322,7 +369,17 @@ export const useGlobalStore = () => {
             //console.log(store.currentList);
             await api.deleteSong({id: store.currentList._id, song: songId}).catch(err => console.log(err)).then(list => {
                 //console.log("It gets here twice over");
-                store.setCurrentList(store.currentList._id);
+                (async (id) => {
+                    await(api.getPlaylistById(id)).catch(err => {
+                        console.log(err);
+                    }).then(response => {
+                        if(response.data.success) {
+                            //console.log("It even gets here");
+                            redux(GlobalStoreActionType.DELETE_SONG, response.data.playlist);
+                        }
+                    })
+                })(store.currentList._id);
+                //store.setCurrentList(store.currentList._id);
             });
         })(songId);
     }
