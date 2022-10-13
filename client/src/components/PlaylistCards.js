@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import SongCard from './SongCard.js'
 import { GlobalStoreContext } from '../store'
@@ -12,6 +12,19 @@ function PlaylistCards() {
     const { store } = useContext(GlobalStoreContext);
     store.history = useHistory();
 
+    let [dragStart, setDragStart] = useState(null);
+
+    let doSwap = (end) => {
+        console.log("Drag and drop not implemented yet");
+        //console.log(dragStart);
+        //console.log(end);
+        if(dragStart !== end) {
+            store.swapSongs(dragStart, end);
+        }
+            //console.log("Still not implemented");
+        setDragStart(null);
+    }
+
     return (
         <div id="playlist-cards">
         {
@@ -21,6 +34,8 @@ function PlaylistCards() {
                     key={'playlist-song-' + (index)}
                     index={index}
                     song={song}
+                    setDragStart={setDragStart}
+                    doSwap={doSwap}
                 />
             ))
         }

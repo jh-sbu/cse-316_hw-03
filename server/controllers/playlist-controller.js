@@ -190,6 +190,32 @@ editSong = async(req, res) => {
     })
 }
 
+swapSongs = async (req, res) => {
+    if(!req.body || !(req.body.start >= 0) || !(req.body.end >= 0) || !req.body.id) {
+        console.log(req.body);
+        return res.status(400).json({success: false, error: "You must provide a playlist id and valid start and end indices"})
+    }
+
+    await Playlist.findOne({_id: req.body.id}).exec().catch(err => {
+        return res.status(400).json({success: false, error: err});
+    }).then(async (list) => {
+        if(req.body.start >= list.songs.length || req.body.end >= list.songs.length) {
+            return res.status(400).json({success: false, error: "Index out of bounds"});
+        }
+        else {
+            temp = list.songs[req.body.start];
+            list.songs[req.body.start] = list.songs[req.body.end];
+            list.songs[req.body.end] = temp;
+            await Playlist.replaceOne({_id: req.body.id}, list).exec().catch(err => {
+                return res.status(400).json({success: false, error: err});
+            }).then(response => {
+                console.log(response);
+                return res.status(200).json({success: true, playlist: list});
+            })
+        }
+    })
+}
+
 renamePlaylist = async (req, res) => {
     if(!req.body || !req.body.id || !req.body.newName)
         return res.status(400).json({success: false, error: "You must include the playlist id and a new name"});
@@ -215,5 +241,6 @@ module.exports = {
     addSong,
     deleteSong,
     editSong,
-    renamePlaylist
+    renamePlaylist,
+    swapSongs
 }

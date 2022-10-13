@@ -430,6 +430,16 @@ export const useGlobalStore = () => {
         });
     }
 
+    store.swapSongs = async (start, end) => {
+        await api.swapSongs({id: store.currentList._id, start: start, end: end}).catch(err => {
+            console.log(err);
+        }).then(response => {
+            if(response.data.success) {
+                redux(GlobalStoreActionType.SET_CURRENT_LIST, response.data.playlist);
+            }
+        })
+    }
+
     store.addSong = (song) => {
         //console.log(songId);
         (async (song) => {
