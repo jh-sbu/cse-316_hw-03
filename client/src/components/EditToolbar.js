@@ -34,14 +34,18 @@ function EditToolbar() {
         editStatus = true;
     }
 
-    let addSongEnabled = store.currentList !== null;
+    
     //console.log(addSongEnabled);
     //console.log(store.currentList);
     //console.log(store.canUndo());
     //console.log(store.tps.hasTransactionToUndo());
-    let undoEnabled = store.currentList !== null && store.canUndo();
-    let redoEnabled = store.currentList !== null && store.canRedo();
-    let closeEnabled = store.currentList !== null;
+
+    let modalOpen = store.isEditSongOpen | store.isDeleteSongOpen | store.isDeleteListOpen;
+
+    let addSongEnabled = !modalOpen && store.currentList !== null;
+    let undoEnabled = !modalOpen && store.currentList !== null && store.canUndo();
+    let redoEnabled = !modalOpen && store.currentList !== null && store.canRedo();
+    let closeEnabled = !modalOpen && store.currentList !== null;
 
     return (
         <span id="edit-toolbar">
