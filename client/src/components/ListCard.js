@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { createRef, useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { GlobalStoreContext } from '../store'
 /*
@@ -15,8 +15,10 @@ function ListCard(props) {
     store.history = useHistory();
     const { idNamePair, selected } = props;
 
+    const editInputRef = createRef();
+
     function handleLoadList(event) {
-        if (!event.target.disabled) {
+        if (!event.target.disabled && !store.listNameActive) {
             let _id = event.target.id;
             if (_id.indexOf('list-card-text-') >= 0)
                 _id = ("" + _id).substring("list-card-text-".length);
@@ -49,9 +51,9 @@ function ListCard(props) {
 
     function toggleEdit() {
         let newActive = !editActive;
-        if (newActive) {
-            store.setIsListNameEditActive();
-        }
+        //if (newActive) {
+            store.setIsListNameEditActive(newActive);
+        //}
         setEditActive(newActive);
     }
 
@@ -71,9 +73,12 @@ function ListCard(props) {
         selectClass = "selected-list-card";
     }
     let cardStatus = false;
-    if (store.isListNameEditActive) {
+    if (store.listNameActive) {
         cardStatus = true;
     }
+
+    //console.log(cardStatus)
+    //console.log(store.isListNameEditActive);
     let cardElement =
         <div
             id={idNamePair._id}
@@ -104,6 +109,13 @@ function ListCard(props) {
             />
         </div>;
 
+    useEffect(() => {
+        if(editActive) {
+            //console.log("We are editing right now");
+            editInputRef.current.focus();
+        }
+    });
+
     if (editActive) {
         cardElement =
             <input
@@ -113,6 +125,7 @@ function ListCard(props) {
                 onKeyPress={handleKeyPress}
                 onChange={handleUpdateText}
                 defaultValue={idNamePair.name}
+                ref={editInputRef}
             />;
     }
     return (

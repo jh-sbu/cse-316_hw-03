@@ -165,8 +165,8 @@ export const useGlobalStore = () => {
             case GlobalStoreActionType.SET_LIST_NAME_EDIT_ACTIVE: {
                 return setStore({
                     ...store,
-                    currentList: payload,
-                    listNameActive: true
+                    //currentList: payload,
+                    listNameActive: payload
                 })
             }
             case GlobalStoreActionType.CANCEL_LIST_DELETION: {
@@ -255,6 +255,8 @@ export const useGlobalStore = () => {
     store.changeListName = async (id, newName) => {
         //console.log(id);
         //console.log(newName);
+        if(newName === "")
+            return;
         await(api.renamePlaylist({id: id, newName: newName})).catch(err => {
             console.log(err);
         }).then(list => {
@@ -524,10 +526,10 @@ export const useGlobalStore = () => {
     }
 
     // THIS FUNCTION ENABLES THE PROCESS OF EDITING A LIST NAME
-    store.setIsListNameEditActive = function () {
+    store.setIsListNameEditActive = function (status = false) {
         storeReducer({
             type: GlobalStoreActionType.SET_LIST_NAME_EDIT_ACTIVE,
-            payload: null
+            payload: status
         });
     }
 

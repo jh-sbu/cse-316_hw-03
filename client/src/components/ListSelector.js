@@ -28,6 +28,10 @@ const ListSelector = () => {
             />
         ))
     }
+
+    let addListActive = !(store.isDeleteListOpen) && !store.listNameActive
+    //console.log(addListActive)
+
     return (
         <div id="playlist-selector">
                 <div id="playlist-selector-heading">
@@ -35,7 +39,8 @@ const ListSelector = () => {
                         type="button"
                         id="add-list-button"
                         onClick={handleCreateNewList}
-                        className="playlister-button"
+                        className={addListActive ? "playlister-button" : "playlister-button-disabled"}
+                        disabled={!addListActive}
                         value="+" />
                     <span />
                     <span id="your-lists-span">Your Lists</span>
