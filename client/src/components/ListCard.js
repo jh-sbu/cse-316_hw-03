@@ -39,7 +39,7 @@ function ListCard(props) {
             store.markListForDeletion(_id);
         }
 
-        console.log("Hello! Delete list is not implemented yet");
+        //console.log("Hello! Delete list is not implemented yet");
     }
 
     function handleToggleEdit(event) {

@@ -9,18 +9,31 @@ import reportWebVitals from './reportWebVitals';
   @author McKilla Gorilla
 */
 import { GlobalStoreContext, useGlobalStore } from './store'
+
 const AppWrapper = () => {
+
+  let testFunc = (event) => {
+    store.store.handleKeyPress(event);
+    //console.log("Test");
+    //console.log(store.store.isEditSongOpen)
+  }
+
   const store = useGlobalStore();
+  //console.log("sdilkadskf");
   return (
-    <GlobalStoreContext.Provider value={store}>
-      <App />
-    </GlobalStoreContext.Provider>
+    <div id="app-root" onKeyDown={testFunc} tabIndex={-1}>
+      <GlobalStoreContext.Provider value={store} onKeyDown={testFunc}>
+        <App />
+      </GlobalStoreContext.Provider>
+    </div>
   )
 }
+
 ReactDOM.render(
   <React.StrictMode>
     <AppWrapper />
   </React.StrictMode>,
+  //fakeRoot()
   document.getElementById('root')
 );
 

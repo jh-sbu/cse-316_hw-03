@@ -531,6 +531,24 @@ export const useGlobalStore = () => {
         });
     }
 
+    store.handleKeyPress = (event) => {
+        if(event.key !== null && event.ctrlKey) {
+            if(event.key == 'z' || event.key == 'Z') {
+                console.log("Tried to undo");
+                if(!(store.isEditSongOpen | store.isDeleteSongOpen | store.isDeleteListOpen) && store.currentList !== null && store.canUndo()) {
+                    store.undo();
+                }
+            } else if (event.key == 'y' || event.key == 'Y') {
+                console.log("Tried to redo");
+                if(!(store.isEditSongOpen | store.isDeleteSongOpen | store.isDeleteListOpen) && store.currentList !== null && store.canRedo()) {
+                    store.redo();
+                }
+            }
+        }
+        
+        //console.log(event);
+    }
+
     // THIS GIVES OUR STORE AND ITS REDUCER TO ANY COMPONENT THAT NEEDS IT
     return { store, storeReducer };
 }
