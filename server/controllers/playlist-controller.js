@@ -118,17 +118,23 @@ addSong = async (req, res) => {
             //console.log(req.body);
             //console.log(req);
             if(!req.body || !req.body.song) {
-                newSong = {
+                let newSong = {
                     title: "Untitled",
                     artist: "Unknown",
                     youTubeId: "dQw4w9WgXcQ"
                 };
     
                 //console.log("This one");
-                list.songs.push(newSong);
+                if(req.body.index !== null && req.body.index >= 0 && req.body.index <= list.songs.length)
+                    list.songs.splice(index, 0, newSong);
+                else
+                    list.songs.push(newSong);
             } else {
-                //list.songs.push(req.body.song);
-                console.log("Thart one");
+                if(req.body.index !== null && req.body.index >= 0 && req.body.index <= list.songs.length)
+                    list.songs.splice(req.body.index, 0, req.body.song)
+                else
+                    list.songs.push(req.body.song);
+                //console.log("Thart one");
             }
 
             //console.log(list);

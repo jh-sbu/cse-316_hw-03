@@ -2,6 +2,7 @@ import { createContext, useState } from 'react'
 import jsTPS from '../common/jsTPS'
 import api from '../api'
 import AddSong_Transaction from '../transactions/AddSong_Transaction';
+import DeleteSong_Transaction from '../transactions/DeleteSong_Transaction';
 export const GlobalStoreContext = createContext({});
 /*
     This is our global data store. Note that it uses the Flux design pattern,
@@ -391,6 +392,25 @@ export const useGlobalStore = () => {
         redux(GlobalStoreActionType.CANCEL_SONG_DELETION, {});
     }
 
+    store.prepareForAddDeleteSongTransaction = () => {
+        redux(GlobalStoreActionType.DELETE_SONG, store.currentList);
+        storeReducer({
+            type: GlobalStoreActionType.DELETE_SONG,
+            payload: store.currentList
+        })
+    }
+
+    store.addDeleteSongTransaction = (songId) => {
+        //console.log(store.isDeleteSongOpen);
+        
+        //redux(GlobalStoreActionType.DELETE_SONG, store.currentList);
+
+        //console.log(store.isDeleteSongOpen);
+
+        let transaction = new DeleteSong_Transaction(store.addSong, store.deleteSong, store.currentList.songs[songId], songId, store);
+        tps.addTransaction(transaction);
+    }
+
     store.deleteSong = (songId) => {
         //console.log(songId);
         (async (songId) => {
@@ -458,11 +478,11 @@ export const useGlobalStore = () => {
         tps.addTransaction(transaction);
     }
 
-    store.addSong = (song) => {
+    store.addSong = (song, index) => {
         //console.log(songId);
         (async (song) => {
             //console.log(store.currentList);
-            await api.addSong({id: store.currentList._id, song: song}).catch(err => console.log(err)).then(list => {
+            await api.addSong({id: store.currentList._id, song: song, index: index}).catch(err => console.log(err)).then(list => {
                 //console.log("It gets here twice over");
                 store.setCurrentList(store.currentList._id);
             });

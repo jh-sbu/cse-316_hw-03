@@ -7,7 +7,11 @@ function DeleteSongModal(props) {
 
     let handleConfirm = () => {
         //console.log("Confirm button not implemented yet");
-        store.deleteSong(store.targetSong);
+        let targetSong = store.targetSong;
+
+        store.prepareForAddDeleteSongTransaction();
+        store.isDeleteSongOpen = false;
+        store.addDeleteSongTransaction(store.targetSong);
     }
 
     let handleCancel = () => {
