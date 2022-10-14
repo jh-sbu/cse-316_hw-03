@@ -1,6 +1,7 @@
 import { createContext, useState } from 'react'
 import jsTPS from '../common/jsTPS'
 import api from '../api'
+import AddSong_Transaction from '../transactions/AddSong_Transaction';
 export const GlobalStoreContext = createContext({});
 /*
     This is our global data store. Note that it uses the Flux design pattern,
@@ -325,6 +326,7 @@ export const useGlobalStore = () => {
 
     // THIS FUNCTION PROCESSES CLOSING THE CURRENTLY LOADED LIST
     store.closeCurrentList = function () {
+        tps.clearAllTransactions();
         storeReducer({
             type: GlobalStoreActionType.CLOSE_CURRENT_LIST,
             payload: {}
@@ -410,6 +412,16 @@ export const useGlobalStore = () => {
         })(songId);
     }
 
+    store.deleteLastSong =  async () => {
+        if(store.currentList !== null) {
+            //console.log(store.currentList.songs.length);
+            //console.log(store.currentList.songs[store.currentList.songs.length]);
+            //console.log(store.currentList.songs);
+            store.setCurrentList(store.currentList._id);
+            //store.deleteSong(store.currentList.songs.length - 1);
+        }
+    }
+
     store.markSongForEditing = (songId) => {
         redux(GlobalStoreActionType.MARK_SONG_FOR_EDITING, songId);
     }
@@ -440,6 +452,12 @@ export const useGlobalStore = () => {
         })
     }
 
+    store.addAddSongTransaction = () => {
+        //console.log(store);
+        let transaction = new AddSong_Transaction(store.addSong, store.deleteSong, store.currentList.songs.length);
+        tps.addTransaction(transaction);
+    }
+
     store.addSong = (song) => {
         //console.log(songId);
         (async (song) => {
@@ -462,11 +480,13 @@ export const useGlobalStore = () => {
     }
 
     store.canUndo = () => {
-        tps.hasTransactionToUndo();
+        //console.log(tps);
+        //console.log(tps.mostRecentTransaction >= 0);
+        return tps.hasTransactionToUndo();
     }
 
     store.canRedo = () => {
-        tps.hasTransactionToRedo();
+        return tps.hasTransactionToRedo();
     }
 
     // THIS FUNCTION ENABLES THE PROCESS OF EDITING A LIST NAME

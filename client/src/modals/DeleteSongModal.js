@@ -6,7 +6,7 @@ function DeleteSongModal(props) {
     const {store} = useContext(GlobalStoreContext);
 
     let handleConfirm = () => {
-        console.log("Confirm button not implemented yet");
+        //console.log("Confirm button not implemented yet");
         store.deleteSong(store.targetSong);
     }
 

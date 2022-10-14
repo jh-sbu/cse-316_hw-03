@@ -32,7 +32,7 @@ function DeleteListModal(props) {
         listName = theList.name;
     }
 
-    console.log(listName);
+    //console.log(listName);
 
     return ( 
         <div 

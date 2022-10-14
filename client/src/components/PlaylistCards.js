@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { Redirect, useHistory } from 'react-router-dom'
 import SongCard from './SongCard.js'
 import { GlobalStoreContext } from '../store'
 /*
@@ -24,6 +24,11 @@ function PlaylistCards() {
             //console.log("Still not implemented");
         setDragStart(null);
     }
+
+    if(store.currentList === null)
+        return (
+            <Redirect to='/' />
+        );
 
     return (
         <div id="playlist-cards">
