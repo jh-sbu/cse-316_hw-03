@@ -44,7 +44,11 @@ function EditSongModal(props) {
             "youTubeId": songYouTubeId
         };
 
-        store.doEditSong(song, store.editSong);
+        store.isEditSongOpen = false; // Again, an absoltely horrendous kludge, but this tps is just not meant for 
+
+        store.addEditSongTransaction(song, store.editSong);
+
+        //store.doEditSong(song, store.editSong);
 
         //console.log("Confirm button not implemented yet");
     }

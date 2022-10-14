@@ -3,6 +3,7 @@ import jsTPS from '../common/jsTPS'
 import api from '../api'
 import AddSong_Transaction from '../transactions/AddSong_Transaction';
 import DeleteSong_Transaction from '../transactions/DeleteSong_Transaction';
+import EditSong_Transaction from '../transactions/EditSong_Transaction';
 export const GlobalStoreContext = createContext({});
 /*
     This is our global data store. Note that it uses the Flux design pattern,
@@ -448,6 +449,13 @@ export const useGlobalStore = () => {
 
     store.cancelSongEditing = () => {
         redux(GlobalStoreActionType.CANCEL_SONG_EDITING, {});
+    }
+
+    store.addEditSongTransaction = (song, index) => {
+        //console.log(song);
+        //console.log(index);
+        let transaction = new EditSong_Transaction(store.doEditSong, song, store.currentList.songs[index], index);
+        tps.addTransaction(transaction);
     }
 
     store.doEditSong = async (song, index) => {

@@ -10,7 +10,7 @@ function DeleteSongModal(props) {
         let targetSong = store.targetSong;
 
         store.prepareForAddDeleteSongTransaction();
-        store.isDeleteSongOpen = false;
+        store.isDeleteSongOpen = false; // This is a terrible kludge, but oh well
         store.addDeleteSongTransaction(store.targetSong);
     }
 
