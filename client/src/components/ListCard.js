@@ -73,7 +73,7 @@ function ListCard(props) {
         selectClass = "selected-list-card";
     }
     let cardStatus = false;
-    if (store.listNameActive) {
+    if (store.listNameActive || store.isDeleteListOpen) {
         cardStatus = true;
     }
 

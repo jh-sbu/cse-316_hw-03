@@ -200,6 +200,7 @@ body {
 .list-card-button {
   float:right;
   font-size:18pt;
+  border-radius: 5px;
 }
 
 input {

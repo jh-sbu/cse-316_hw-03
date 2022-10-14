@@ -45,6 +45,8 @@ function SongCard(props) {
         event.preventDefault();
     }
 
+    let buttonDisabled = (store.isDeleteSongOpen || store.isEditSongOpen)
+
     let cardClass = "list-card unselected-list-card";
     return (
         <div
@@ -68,7 +70,8 @@ function SongCard(props) {
             <input
                 type="button"
                 id={"remove-song-" + index}
-                className="list-card-button"
+                className={buttonDisabled ? "list-card-button disabled" : "list-card-button"}
+                disabled={buttonDisabled}
                 value={"\u2715"}
                 onClick={handleDeleteSong}
             />
