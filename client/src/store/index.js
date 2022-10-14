@@ -509,10 +509,12 @@ export const useGlobalStore = () => {
         return store.currentList.songs.length;
     }
     store.undo = function () {
-        tps.undoTransaction();
+        let x = tps.undoTransaction();
+        console.log(x);
     }
     store.redo = function () {
-        tps.doTransaction();
+        let x = tps.doTransaction();
+        console.log(x);
     }
 
     store.canUndo = () => {

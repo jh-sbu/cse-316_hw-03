@@ -12,7 +12,7 @@ import { GlobalStoreContext, useGlobalStore } from './store'
 
 const AppWrapper = () => {
 
-  let testFunc = (event) => {
+  let handleKeys = (event) => {
     store.store.handleKeyPress(event);
     //console.log("Test");
     //console.log(store.store.isEditSongOpen)
@@ -21,8 +21,8 @@ const AppWrapper = () => {
   const store = useGlobalStore();
   //console.log("sdilkadskf");
   return (
-    <div id="app-root" onKeyDown={testFunc} tabIndex={-1}>
-      <GlobalStoreContext.Provider value={store} onKeyDown={testFunc}>
+    <div id="app-root" onKeyDown={handleKeys} tabIndex={-1}>
+      <GlobalStoreContext.Provider value={store} onKeyDown={handleKeys}>
         <App />
       </GlobalStoreContext.Provider>
     </div>
