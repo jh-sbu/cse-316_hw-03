@@ -19,7 +19,8 @@ function PlaylistCards() {
         //console.log(dragStart);
         //console.log(end);
         if(dragStart !== end) {
-            store.swapSongs(dragStart, end);
+            store.addMoveSongTransaction(dragStart, end);
+            //store.swapSongs(dragStart, end);
         }
             //console.log("Still not implemented");
         setDragStart(null);

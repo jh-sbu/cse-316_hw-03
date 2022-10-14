@@ -4,6 +4,7 @@ import api from '../api'
 import AddSong_Transaction from '../transactions/AddSong_Transaction';
 import DeleteSong_Transaction from '../transactions/DeleteSong_Transaction';
 import EditSong_Transaction from '../transactions/EditSong_Transaction';
+import MoveSong_Transaction from '../transactions/MoveSong_Transaction';
 export const GlobalStoreContext = createContext({});
 /*
     This is our global data store. Note that it uses the Flux design pattern,
@@ -468,6 +469,11 @@ export const useGlobalStore = () => {
                 redux(GlobalStoreActionType.EDIT_SONG, response.data.playlist);
             }
         });
+    }
+
+    store.addMoveSongTransaction = (start, end) => {
+        let transaction = new MoveSong_Transaction(store.swapSongs, start, end);
+        tps.addTransaction(transaction);
     }
 
     store.swapSongs = async (start, end) => {

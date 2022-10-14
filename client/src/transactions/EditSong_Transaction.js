@@ -1,7 +1,7 @@
 import jsTPS_Transaction from "../common/jsTPS.js"
 import React, { useContext, useState } from 'react'
 /**
- * AddSong_Transaction
+ * EditSong_Transaction
  * 
  * This class represents a transaction that works with editing
  * a song. It will be managed by the transaction stack.
